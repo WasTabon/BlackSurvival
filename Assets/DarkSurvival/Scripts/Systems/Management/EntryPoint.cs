@@ -45,6 +45,8 @@ namespace DarkSurvival.Scripts.Systems.Management
         
             CreatePlayerFactory();
             SpawnPlayer();
+
+            Cursor.lockState = CursorLockMode.Locked;
         }
 
         private void InitializeInputControls()

@@ -1,5 +1,4 @@
 using DarkSurvival.Scripts.InputSystem;
-using DarkSurvival.Scripts.Systems.DI;
 using UnityEngine;
 
 namespace DarkSurvival.Scripts.Gameplay.Player
@@ -9,11 +8,12 @@ namespace DarkSurvival.Scripts.Gameplay.Player
       private readonly float _moveSpeed;
       private readonly float _jumpForce;
 
-      private Rigidbody _rigidbody;
+      private readonly Rigidbody _rigidbody;
 
-      [Inject] private InputManager _inputManager;
+      private readonly InputManager _inputManager;
 
       private Vector3 _inputDirection;
+      private Vector3 _worldDirection;
    
       public PlayerMovement(Rigidbody rigidbody, float moveSpeed, float jumpForce, InputManager inputManager)
       {
@@ -23,11 +23,13 @@ namespace DarkSurvival.Scripts.Gameplay.Player
          _inputManager = inputManager;
       }
 
-      public void HandleMovement()
+      public void HandleMovement(float runMultiplier)
       {
          _inputDirection = new Vector3(_inputManager.HorizontalKeyboard, 0, _inputManager.VerticalKeyboard);
-      
-         _rigidbody.MovePosition(_rigidbody.position + _inputDirection * Time.deltaTime * _moveSpeed);
+         
+         _worldDirection = _rigidbody.gameObject.transform.TransformDirection(_inputDirection);
+
+         _rigidbody.MovePosition(_rigidbody.position + _worldDirection * Time.deltaTime * _moveSpeed * runMultiplier);
       }
    }
 }

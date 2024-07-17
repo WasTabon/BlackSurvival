@@ -1,4 +1,5 @@
 {
   "moveSpeed": 5,
+  "runSpeedMultiplier": 2,
   "jumpHeight": 7
 }

@@ -1,7 +1,8 @@
 
 [System.Serializable]
-public class PlayerData
+public struct PlayerData
 {
     public int moveSpeed;
+    public int runSpeedMultiplier;
     public int jumpHeight;
 }
