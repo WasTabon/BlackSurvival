@@ -1,22 +1,24 @@
-using UnityEngine;
 using Newtonsoft.Json;
-using System.IO;
+using UnityEngine;
 
-public class JsonLoader
+namespace DarkSurvival.Scripts.Systems.Utils.JsonLoader
 {
-    public static T LoadJsonFile<T>(string fileName)
+    public class JsonLoader
     {
-        TextAsset jsonData = Resources.Load<TextAsset>(fileName);
+        public static T LoadJsonFile<T>(string fileName)
+        {
+            TextAsset jsonData = Resources.Load<TextAsset>(fileName);
 
-        if (jsonData != null)
-        {
-            T data = JsonConvert.DeserializeObject<T>(jsonData.text);
-            return data;
-        }
-        else
-        {
-            Debug.LogError($"JSON file '{fileName}' not found in Resources.");
-            return default;
+            if (jsonData != null)
+            {
+                T data = JsonConvert.DeserializeObject<T>(jsonData.text);
+                return data;
+            }
+            else
+            {
+                Debug.LogError($"JSON file '{fileName}' not found in Resources.");
+                return default;
+            }
         }
     }
 }

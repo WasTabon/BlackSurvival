@@ -29,7 +29,19 @@ namespace DarkSurvival.Scripts.Gameplay.Player
          
          _worldDirection = _rigidbody.gameObject.transform.TransformDirection(_inputDirection);
 
-         _rigidbody.MovePosition(_rigidbody.position + _worldDirection * Time.deltaTime * _moveSpeed * runMultiplier);
+         _rigidbody.MovePosition(_rigidbody.position + _worldDirection * (Time.deltaTime * _moveSpeed * runMultiplier));
+      }
+
+      public void HandleJump()
+      {
+         
+      }
+
+      public bool IsGrounded()
+      {
+         //Physics.Raycast(_rigidbody.position, Vector3.down, _groundCheckDistance, _groundLayer);
+         // Layer.NameToLayer
+         return true;
       }
    }
 }

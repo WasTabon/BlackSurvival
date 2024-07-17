@@ -1,7 +1,9 @@
 using System;
+using DarkSurvival.Data.Serializables.Player;
 using DarkSurvival.Scripts.InputSystem;
 using DarkSurvival.Scripts.Interfaces;
 using DarkSurvival.Scripts.Systems.DI;
+using DarkSurvival.Scripts.Systems.Utils.JsonLoader;
 using UnityEngine;
 
 namespace DarkSurvival.Scripts.Gameplay.Player

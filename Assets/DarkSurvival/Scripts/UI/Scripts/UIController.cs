@@ -13,7 +13,7 @@ namespace DarkSurvival.Scripts.UI.Scripts
         public event Action RunningCanceled;
         
         public event Action<Vector2> MouseMoved;
-        public event Action MouseMoveCaneled;
+        public event Action MouseMoveCanсeled;
         
         [Inject] private InputControls _inputControls;
 
@@ -25,14 +25,14 @@ namespace DarkSurvival.Scripts.UI.Scripts
         public void Initialize()
         {
             _inputControls.Player.Move.performed += ctx => OnMovePerformed(ctx.ReadValue<Vector2>());
-            _inputControls.Player.Move.canceled += ctx => OnMoveCanceled();
+            _inputControls.Player.Move.canceled += _ => OnMoveCanceled();
 
-            _inputControls.Player.Run.performed += ctx => OnRunningPerformed();
-            _inputControls.Player.Run.canceled += ctx => OnRunningCanceled();
+            _inputControls.Player.Run.performed += _ => OnRunningPerformed();
+            _inputControls.Player.Run.canceled += _ => OnRunningCanceled();
             
             _inputControls.Player.MouseX.performed += ctx => _mouseX = ctx.ReadValue<float>();
             _inputControls.Player.MouseY.performed += ctx => _mouseY = ctx.ReadValue<float>();
-            _inputControls.Player.MouseX.canceled += ctx => OnMoveCanceled();
+            _inputControls.Player.MouseX.canceled += _ => OnMoveCanceled();
 
             _mousePosition = new Vector2();
         }
@@ -67,9 +67,9 @@ namespace DarkSurvival.Scripts.UI.Scripts
         {
             MouseMoved?.Invoke(movement);
         }
-        private void OnMouseCaceled()
+        private void OnMouseCanceled()
         {
-            MouseMoveCaneled?.Invoke();
+            MouseMoveCanсeled?.Invoke();
         }
     }
 }

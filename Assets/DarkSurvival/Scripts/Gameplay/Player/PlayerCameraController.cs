@@ -5,13 +5,18 @@ namespace DarkSurvival.Scripts.Gameplay.Player
 {
     public class PlayerCameraController
     {
+        private const float _verticalRotationLimit = 90.0f;
+
+        private const float HorizontalSenitivity = 0.3f;
+        private const float VerticalSenitivity = 0.2f;
+        
         private readonly Transform _playerTransform;
         private readonly Transform _headTransform;
         private readonly InputManager _inputManager;
         
-        private float _verticalRotation = 0.0f;
-        private const float _verticalRotationLimit = 90.0f;
-
+        private float _verticalRotation;
+        private float _horizontalRotation;
+        
         public PlayerCameraController(Transform playerTransform, Transform headTransform, InputManager inputManager)
         {
             _playerTransform = playerTransform;
@@ -27,16 +32,14 @@ namespace DarkSurvival.Scripts.Gameplay.Player
 
         private void RotatePlayer()
         {
-            float sensitivity = 0.5f; // Коэффициент чувствительности для горизонтального вращения.
-            float horizontalRotation = _inputManager.HorizontalMouse * sensitivity;
+            _horizontalRotation = _inputManager.HorizontalMouse * HorizontalSenitivity;
     
-            _playerTransform.Rotate(Vector3.up, horizontalRotation);
+            _playerTransform.Rotate(Vector3.up, _horizontalRotation);
         }
 
         private void RotateHead()
         {
-            float sensitivity = 0.4f; // Коэффициент чувствительности. Можно настроить по своему усмотрению.
-            float verticalRotation = _inputManager.VerticalMouse * sensitivity;
+            float verticalRotation = _inputManager.VerticalMouse * VerticalSenitivity;
     
             _verticalRotation -= verticalRotation;
             _verticalRotation = Mathf.Clamp(_verticalRotation, -_verticalRotationLimit, _verticalRotationLimit);

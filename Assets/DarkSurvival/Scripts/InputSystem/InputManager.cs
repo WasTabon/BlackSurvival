@@ -21,7 +21,7 @@ namespace DarkSurvival.Scripts.InputSystem
             uiController.InputPressed += SetInputKeyboard;
             uiController.InputCanceled += CancelMove;
             uiController.MouseMoved += SetInputMouse;
-            uiController.MouseMoveCaneled += CancelMouse;
+            uiController.MouseMoveCanсeled += CancelMouse;
             uiController.RunningPressed += SetRunning;
             uiController.RunningCanceled += CancelRunning;
         }

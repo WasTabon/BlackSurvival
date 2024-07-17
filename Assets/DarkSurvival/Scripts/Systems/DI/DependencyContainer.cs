@@ -7,7 +7,7 @@ namespace DarkSurvival.Scripts.Systems.DI
     public class DependencyContainer
     {
         private static DependencyContainer _instance;
-        private static readonly object _lock = new object();
+        private static readonly object Lock = new object();
 
         private readonly Dictionary<Type, object> _services = new Dictionary<Type, object>();
         private readonly Dictionary<string, object> _namedServices = new Dictionary<string, object>();
@@ -20,7 +20,7 @@ namespace DarkSurvival.Scripts.Systems.DI
         {
             get
             {
-                lock (_lock)
+                lock (Lock)
                 {
                     if (_instance == null)
                     {
@@ -35,26 +35,12 @@ namespace DarkSurvival.Scripts.Systems.DI
         public void Register<T>(T instance)
         {
             var type = typeof(T);
-            if (_services.ContainsKey(type))
-            {
-                _services[type] = instance;
-            }
-            else
-            {
-                _services.Add(type, instance);
-            }
+            _services[type] = instance;
         }
 
         public void Register(string name, object instance)
         {
-            if (_namedServices.ContainsKey(name))
-            {
-                _namedServices[name] = instance;
-            }
-            else
-            {
-                _namedServices.Add(name, instance);
-            }
+            _namedServices[name] = instance;
         }
 
         public T Resolve<T>()
