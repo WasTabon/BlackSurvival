@@ -26,7 +26,7 @@ namespace DarkSurvival.Scripts.Systems.InventorySystem
             {
                 _iconImage.enabled = true;
                 _iconImage.sprite = slot.ItemData.Icon;
-                _stackSizeText.text = slot.StackSize > 1 ? slot.StackSize.ToString() : "";
+                _stackSizeText.text = slot.StackSize >= 0 ? slot.StackSize.ToString() : "";
             }
         }
     }

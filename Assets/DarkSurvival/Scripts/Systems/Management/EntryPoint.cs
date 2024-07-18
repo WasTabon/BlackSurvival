@@ -54,12 +54,12 @@ namespace DarkSurvival.Scripts.Systems.Management
             CreatePlayerFactory();
             SpawnPlayer();
 
-            _inventoryModel = new InventoryModel(1); // 5 слотов
+            _inventoryModel = new InventoryModel(1);
             _inventoryController = gameObject.AddComponent<InventoryController>();
             _inventoryController.Initialize(_inventoryModel, _inventoryView);
 
-            // Добавление предметов в инвентарь
             _inventoryController.AddItem(healthPotionItemData, 1);
+
             
             Cursor.lockState = CursorLockMode.Locked;
         }

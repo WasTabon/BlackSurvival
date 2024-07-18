@@ -10,9 +10,10 @@ namespace DarkSurvival.Scripts.Systems.InventorySystem
         public bool IsEmpty => ItemData == null;
 
         public void SetItem(ItemData itemData, int stackSize)
-        {
+        { 
             ItemData = itemData;
             StackSize = stackSize;
+            Debug.Log($"Stack Size - {StackSize}");
         }
 
         public void Clear()

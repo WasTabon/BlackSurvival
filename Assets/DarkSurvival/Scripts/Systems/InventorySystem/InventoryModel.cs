@@ -8,8 +8,7 @@ namespace DarkSurvival.Scripts.Systems.InventorySystem
     public class InventoryModel
     {
         public event Action OnInventoryChanged;
-
-        [SerializeField]
+        
         private List<InventorySlot> _slots;
 
         public InventoryModel(int slotCount)
@@ -23,7 +22,7 @@ namespace DarkSurvival.Scripts.Systems.InventorySystem
 
         public IReadOnlyList<InventorySlot> Slots => _slots;
 
-        public void AddItem(ItemData itemData, int count = 1)
+        public void AddItem(ItemData itemData, int count)
         {
             foreach (var slot in _slots)
             {
@@ -44,6 +43,15 @@ namespace DarkSurvival.Scripts.Systems.InventorySystem
                     return;
                 }
             }
+        }
+        public InventorySlot GetItem(int slotIndex)
+        {
+            if (slotIndex < 0 || slotIndex >= _slots.Count)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+
+            return _slots[slotIndex];
         }
 
         public void RemoveItem(int slotIndex, int count = 1)
