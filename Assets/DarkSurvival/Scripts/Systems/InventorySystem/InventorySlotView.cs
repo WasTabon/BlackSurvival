@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,12 +6,12 @@ namespace DarkSurvival.Scripts.Systems.InventorySystem
 {
     public class InventorySlotView 
     {
-        private readonly Text _stackSizeText;
+        private readonly TextMeshProUGUI _stackSizeText;
         private readonly Image _iconImage;
 
         public InventorySlotView(Transform slotTransform)
         {
-            _stackSizeText = slotTransform.Find("StackSizeText").GetComponent<Text>();
+            _stackSizeText = slotTransform.Find("StackSizeText").GetComponent<TextMeshProUGUI>();
             _iconImage = slotTransform.Find("IconImage").GetComponent<Image>();
         }
 

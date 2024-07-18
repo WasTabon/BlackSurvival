@@ -1,7 +1,9 @@
+using DarkSurvival.Data.ScriptableObjects;
 using DarkSurvival.Scripts.Gameplay.Player;
 using DarkSurvival.Scripts.InputSystem;
 using DarkSurvival.Scripts.Systems.DI;
 using DarkSurvival.Scripts.Systems.Factory;
+using DarkSurvival.Scripts.Systems.InventorySystem;
 using DarkSurvival.Scripts.Systems.Utils;
 using DarkSurvival.Scripts.UI.Scripts;
 using Unity.Mathematics;
@@ -12,6 +14,12 @@ namespace DarkSurvival.Scripts.Systems.Management
     public class EntryPoint : MonoBehaviour
     {
         [SerializeField] private Transform _playerSpawnPos;
+        
+        [SerializeField] private Transform _slotsParent;
+        [SerializeField] private InventoryView _inventoryView;
+        [SerializeField] private ItemData healthPotionItemData;
+        private InventoryController _inventoryController;
+        private InventoryModel _inventoryModel;
         
         private InputManager _inputManager;
         private UIController _uiController;
@@ -46,6 +54,13 @@ namespace DarkSurvival.Scripts.Systems.Management
             CreatePlayerFactory();
             SpawnPlayer();
 
+            _inventoryModel = new InventoryModel(1); // 5 слотов
+            _inventoryController = gameObject.AddComponent<InventoryController>();
+            _inventoryController.Initialize(_inventoryModel, _inventoryView);
+
+            // Добавление предметов в инвентарь
+            _inventoryController.AddItem(healthPotionItemData, 1);
+            
             Cursor.lockState = CursorLockMode.Locked;
         }
 
