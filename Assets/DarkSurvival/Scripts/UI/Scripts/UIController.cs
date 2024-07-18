@@ -14,6 +14,8 @@ namespace DarkSurvival.Scripts.UI.Scripts
         
         public event Action<Vector2> MouseMoved;
         public event Action MouseMoveCanсeled;
+
+        public event Action JumpPerformed;
         
         [Inject] private InputControls _inputControls;
 
@@ -33,6 +35,8 @@ namespace DarkSurvival.Scripts.UI.Scripts
             _inputControls.Player.MouseX.performed += ctx => _mouseX = ctx.ReadValue<float>();
             _inputControls.Player.MouseY.performed += ctx => _mouseY = ctx.ReadValue<float>();
             _inputControls.Player.MouseX.canceled += _ => OnMoveCanceled();
+
+            _inputControls.Player.Jump.performed += _ => OnJumpPerformed();
 
             _mousePosition = new Vector2();
         }
@@ -70,6 +74,11 @@ namespace DarkSurvival.Scripts.UI.Scripts
         private void OnMouseCanceled()
         {
             MouseMoveCanсeled?.Invoke();
+        }
+
+        private void OnJumpPerformed()
+        {
+            JumpPerformed?.Invoke();
         }
     }
 }

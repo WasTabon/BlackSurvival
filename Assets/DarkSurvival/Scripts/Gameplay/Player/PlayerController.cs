@@ -37,6 +37,7 @@ namespace DarkSurvival.Scripts.Gameplay.Player
             
             OnUpdateCalledFloat += _playerMovement.HandleMovement;
             OnUpdateCalled += _cameraController.UpdateCamera;
+            _inputManager.JumpPerformed += _playerMovement.HandleJump;
         }
 
         public void Update()

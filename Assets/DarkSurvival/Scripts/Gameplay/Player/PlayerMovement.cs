@@ -5,6 +5,10 @@ namespace DarkSurvival.Scripts.Gameplay.Player
 {
    public class PlayerMovement
    {
+      private const float GroundCheckDistance = 2f;
+      private const string LayerPlayerName = "Player";
+      private readonly LayerMask _playerLayer;
+       
       private readonly float _moveSpeed;
       private readonly float _jumpForce;
 
@@ -21,6 +25,8 @@ namespace DarkSurvival.Scripts.Gameplay.Player
          _jumpForce = jumpForce;
          _rigidbody = rigidbody;
          _inputManager = inputManager;
+
+         _playerLayer = LayerMask.NameToLayer(LayerPlayerName);
       }
 
       public void HandleMovement(float runMultiplier)
@@ -34,14 +40,20 @@ namespace DarkSurvival.Scripts.Gameplay.Player
 
       public void HandleJump()
       {
-         
+         Debug.Log("Start jump");
+         Debug.Log(IsGrounded());
+         if (IsGrounded())
+         {
+            _rigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
+            Debug.Log("Jumped");
+         }
       }
 
       public bool IsGrounded()
       {
-         //Physics.Raycast(_rigidbody.position, Vector3.down, _groundCheckDistance, _groundLayer);
-         // Layer.NameToLayer
-         return true;
+         int layerMask = ~_playerLayer.value;
+         
+         return Physics.Raycast(_rigidbody.position, Vector3.down, GroundCheckDistance, layerMask);
       }
    }
 }
