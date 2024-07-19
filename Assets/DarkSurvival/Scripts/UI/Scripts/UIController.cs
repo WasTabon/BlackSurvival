@@ -18,6 +18,7 @@ namespace DarkSurvival.Scripts.UI.Scripts
         public event Action JumpPerformed;
         
         [Inject] private InputControls _inputControls;
+        [Inject] private UIView _uiView;
 
         private Vector2 _mousePosition;
         

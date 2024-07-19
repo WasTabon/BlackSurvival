@@ -3,6 +3,7 @@ using DarkSurvival.Data.Serializables.Player;
 using DarkSurvival.Scripts.InputSystem;
 using DarkSurvival.Scripts.Interfaces;
 using DarkSurvival.Scripts.Systems.DI;
+using DarkSurvival.Scripts.Systems.InventorySystem;
 using DarkSurvival.Scripts.Systems.Utils.JsonLoader;
 using UnityEngine;
 
@@ -16,13 +17,15 @@ namespace DarkSurvival.Scripts.Gameplay.Player
         [InjectNamed("Player")] 
         private GameObject _characterInScene;
 
-        [Inject] 
-        private InputManager _inputManager;
+        [Inject] private InputManager _inputManager;
+
+        [Inject] private InventoryController _inventoryController;
 
         private float _runningMultiplier;
         
         private PlayerMovement _playerMovement;
         private PlayerCameraController _cameraController;
+        private PlayerCollectItems _playerCollectItems;
 
         private Rigidbody _rigidbody;
 
@@ -33,10 +36,12 @@ namespace DarkSurvival.Scripts.Gameplay.Player
             
             _playerMovement = new PlayerMovement(_rigidbody, ReadPlayerData().moveSpeed, ReadPlayerData().jumpHeight, _inputManager);
             _cameraController = new PlayerCameraController(_characterInScene.transform, headTransform, _inputManager);
+            _playerCollectItems = new PlayerCollectItems(_inventoryController, ReadPlayerData().MaxCollectDistance);
             _runningMultiplier = ReadPlayerData().runSpeedMultiplier;
             
             OnUpdateCalledFloat += _playerMovement.HandleMovement;
             OnUpdateCalled += _cameraController.UpdateCamera;
+            OnUpdateCalled += _playerCollectItems.Collect;
             _inputManager.JumpPerformed += _playerMovement.HandleJump;
         }
 

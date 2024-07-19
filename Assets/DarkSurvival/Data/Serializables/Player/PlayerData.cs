@@ -7,5 +7,6 @@ namespace DarkSurvival.Data.Serializables.Player
         public int moveSpeed;
         public int runSpeedMultiplier;
         public int jumpHeight;
+        public int MaxCollectDistance;
     }
 }

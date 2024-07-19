@@ -18,6 +18,7 @@ namespace DarkSurvival.Scripts.Systems.Management
         [SerializeField] private Transform _slotsParent;
         [SerializeField] private InventoryView _inventoryView;
         [SerializeField] private ItemData healthPotionItemData;
+        [SerializeField] private UIView _uiView;
         private InventoryController _inventoryController;
         private InventoryModel _inventoryModel;
         
@@ -42,6 +43,7 @@ namespace DarkSurvival.Scripts.Systems.Management
         
             DependencyContainer.Instance.Register(_inputControls);
         
+            DependencyContainer.Instance.Register(_uiView);
             InitializeUIController();
             
             InitializeInputManager();
@@ -52,13 +54,17 @@ namespace DarkSurvival.Scripts.Systems.Management
             _updater.RegisterUpdatable(_uiController);
         
             CreatePlayerFactory();
-            SpawnPlayer();
 
             _inventoryModel = new InventoryModel(1);
             _inventoryController = gameObject.AddComponent<InventoryController>();
             _inventoryController.Initialize(_inventoryModel, _inventoryView);
 
-            _inventoryController.AddItem(healthPotionItemData, 1);
+            CreateInventory(1);
+            DependencyContainer.Instance.Register(_inventoryController);
+            
+            SpawnPlayer();
+            
+            //_inventoryController.AddItem(healthPotionItemData, 1);
 
             
             Cursor.lockState = CursorLockMode.Locked;
@@ -93,6 +99,14 @@ namespace DarkSurvival.Scripts.Systems.Management
             _updater = updater;
         }
 
+        private void CreateInventory(int slotCount)
+        {
+            _inventoryModel = new InventoryModel(slotCount);
+            _inventoryController = gameObject.AddComponent<InventoryController>();
+            _inventoryController.Initialize(_inventoryModel, _inventoryView);
+
+        }
+        
         private void CreatePlayerFactory()
         {
             _playerFactory = new PlayerFactory();
@@ -105,6 +119,7 @@ namespace DarkSurvival.Scripts.Systems.Management
             
             _playerController = new PlayerController();
             DependencyContainer.Instance.InjectDependencies(_playerController);
+            DependencyContainer.Instance.InjectDependencies(_inventoryController);
             _playerController.Initialize();
             
             _updater.RegisterUpdatable(_playerController); 

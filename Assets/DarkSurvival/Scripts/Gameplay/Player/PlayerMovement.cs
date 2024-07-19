@@ -40,12 +40,10 @@ namespace DarkSurvival.Scripts.Gameplay.Player
 
       public void HandleJump()
       {
-         Debug.Log("Start jump");
          Debug.Log(IsGrounded());
          if (IsGrounded())
          {
             _rigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
-            Debug.Log("Jumped");
          }
       }
 
