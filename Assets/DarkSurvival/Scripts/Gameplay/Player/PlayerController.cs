@@ -45,6 +45,7 @@ namespace DarkSurvival.Scripts.Gameplay.Player
             OnUpdateCalled += _cameraController.UpdateCamera;
             OnUpdateCalled += _playerCollectItems.CheckForCollectables;
             _inputManager.JumpPerformed += _playerMovement.HandleJump;
+            _inputManager.CollectItemPerformed += _playerCollectItems.Collect;
         }
 
         public void Update()

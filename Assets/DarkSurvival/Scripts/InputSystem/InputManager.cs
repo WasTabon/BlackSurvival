@@ -7,7 +7,8 @@ namespace DarkSurvival.Scripts.InputSystem
     public class InputManager
     {
         public event Action JumpPerformed;
-    
+        public event Action CollectItemPerformed;
+        
         public UIController UiController { get; private set; }
         
         public float VerticalKeyboard { get; private set; }
@@ -25,11 +26,13 @@ namespace DarkSurvival.Scripts.InputSystem
             UiController.InputPressed += SetInputKeyboard;
             UiController.InputCanceled += CancelMove;
             UiController.MouseMoved += SetInputMouse;
-            UiController.MouseMoveCanсeled += CancelMouse;
+            UiController.MouseMoveCanceled += CancelMouse;
             UiController.RunningPressed += SetRunning;
             UiController.RunningCanceled += CancelRunning;
 
             UiController.JumpPerformed += SetJump;
+
+            UiController.CollectItem += SetCollectItem;
         }
 
         private void SetInputKeyboard(Vector2 value)
@@ -68,6 +71,11 @@ namespace DarkSurvival.Scripts.InputSystem
         private void SetJump()
         {
             JumpPerformed?.Invoke();
+        }
+
+        private void SetCollectItem()
+        {
+            CollectItemPerformed?. Invoke();
         }
     }
 }

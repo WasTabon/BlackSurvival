@@ -514,6 +514,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _collectItemText: {fileID: 14978453}
+  _inventoryTransform: {fileID: 1685650698}
 --- !u!4 &280772680
 Transform:
   m_ObjectHideFlags: 0

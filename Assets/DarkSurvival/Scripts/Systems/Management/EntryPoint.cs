@@ -52,13 +52,10 @@ namespace DarkSurvival.Scripts.Systems.Management
         
             CreatePlayerFactory();
 
-            CreateInventory(1);
+            CreateInventory(3);
             DependencyContainer.Instance.Register(_inventoryController);
             
             SpawnPlayer();
-            
-            //_inventoryController.AddItem(healthPotionItemData, 1);
-
             
            Cursor.lockState = CursorLockMode.Locked;
         }

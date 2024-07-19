@@ -16,6 +16,7 @@ namespace DarkSurvival.Scripts.Gameplay.Player
         
         private float _verticalRotation;
         private float _horizontalRotation;
+        private float _currentYRotation;
         
         public PlayerCameraController(Transform playerTransform, Transform headTransform, InputManager inputManager)
         {
@@ -33,14 +34,15 @@ namespace DarkSurvival.Scripts.Gameplay.Player
         private void RotatePlayer()
         {
             _horizontalRotation = _inputManager.HorizontalMouse * HorizontalSenitivity;
-    
-            Debug.Log($"Horizontal Rotation: {_horizontalRotation}");
             
             if (Mathf.Abs(_horizontalRotation) < 0.1f)
             {
-                Vector3 currentRotation = _playerTransform.rotation.eulerAngles;
-                _playerTransform.rotation = Quaternion.Euler(new Vector3(currentRotation.x, Mathf.Round(currentRotation.y), currentRotation.z));
-                Debug.Log($"Current rotation: {currentRotation}");
+                _currentYRotation = _playerTransform.eulerAngles.y;
+
+                _currentYRotation = (int)(_currentYRotation + 0.5f);
+                
+                _playerTransform.rotation = Quaternion.Euler(0f, _currentYRotation, 0f);
+                
                 return;
             }
             

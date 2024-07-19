@@ -13,7 +13,6 @@ namespace DarkSurvival.Scripts.Systems.InventorySystem
         { 
             ItemData = itemData;
             StackSize = stackSize;
-            Debug.Log($"Stack Size - {StackSize}");
         }
 
         public void Clear()
