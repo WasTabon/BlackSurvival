@@ -37,11 +37,13 @@ namespace DarkSurvival.Scripts.Gameplay.Player
             _playerMovement = new PlayerMovement(_rigidbody, ReadPlayerData().moveSpeed, ReadPlayerData().jumpHeight, _inputManager);
             _cameraController = new PlayerCameraController(_characterInScene.transform, headTransform, _inputManager);
             _playerCollectItems = new PlayerCollectItems(_inventoryController, ReadPlayerData().MaxCollectDistance);
-            _runningMultiplier = ReadPlayerData().runSpeedMultiplier;
             
+            _runningMultiplier = ReadPlayerData().runSpeedMultiplier;
+
+            _playerCollectItems.OnSeeCollectable += _inputManager.UiController.ManageCanCollectAItem;
             OnUpdateCalledFloat += _playerMovement.HandleMovement;
             OnUpdateCalled += _cameraController.UpdateCamera;
-            OnUpdateCalled += _playerCollectItems.Collect;
+            OnUpdateCalled += _playerCollectItems.CheckForCollectables;
             _inputManager.JumpPerformed += _playerMovement.HandleJump;
         }
 

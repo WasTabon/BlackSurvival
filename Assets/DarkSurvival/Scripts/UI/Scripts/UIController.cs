@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using DarkSurvival.Scripts.Interfaces;
 using DarkSurvival.Scripts.Systems.DI;
+using TMPro;
 
 namespace DarkSurvival.Scripts.UI.Scripts
 {
@@ -20,13 +21,19 @@ namespace DarkSurvival.Scripts.UI.Scripts
         [Inject] private InputControls _inputControls;
         [Inject] private UIView _uiView;
 
+        private TextMeshProUGUI _canCollectText;
+        
         private Vector2 _mousePosition;
+
+        private bool _canCollectItem;
         
         private float _mouseX;
         private float _mouseY;
 
         public void Initialize()
         {
+            _canCollectText = _uiView.GetCollectItemText;
+            
             _inputControls.Player.Move.performed += ctx => OnMovePerformed(ctx.ReadValue<Vector2>());
             _inputControls.Player.Move.canceled += _ => OnMoveCanceled();
 
@@ -38,7 +45,7 @@ namespace DarkSurvival.Scripts.UI.Scripts
             _inputControls.Player.MouseX.canceled += _ => OnMoveCanceled();
 
             _inputControls.Player.Jump.performed += _ => OnJumpPerformed();
-
+            
             _mousePosition = new Vector2();
         }
         
@@ -48,6 +55,12 @@ namespace DarkSurvival.Scripts.UI.Scripts
             _mousePosition.y = _mouseY;
             
             OnMouseMovePerformed(_mousePosition);
+        }
+        
+        public void ManageCanCollectAItem(bool state)
+        {
+            _canCollectText.gameObject.SetActive(state);
+            _canCollectItem = state;
         }
         
         private void OnMovePerformed(Vector2 movement)

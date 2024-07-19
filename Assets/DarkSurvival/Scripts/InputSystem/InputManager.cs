@@ -8,6 +8,8 @@ namespace DarkSurvival.Scripts.InputSystem
     {
         public event Action JumpPerformed;
     
+        public UIController UiController { get; private set; }
+        
         public float VerticalKeyboard { get; private set; }
         public float HorizontalKeyboard { get; private set; }
         
@@ -18,14 +20,16 @@ namespace DarkSurvival.Scripts.InputSystem
     
         public void Initialize(UIController uiController)
         {
-            uiController.InputPressed += SetInputKeyboard;
-            uiController.InputCanceled += CancelMove;
-            uiController.MouseMoved += SetInputMouse;
-            uiController.MouseMoveCanсeled += CancelMouse;
-            uiController.RunningPressed += SetRunning;
-            uiController.RunningCanceled += CancelRunning;
+            UiController = uiController;
+            
+            UiController.InputPressed += SetInputKeyboard;
+            UiController.InputCanceled += CancelMove;
+            UiController.MouseMoved += SetInputMouse;
+            UiController.MouseMoveCanсeled += CancelMouse;
+            UiController.RunningPressed += SetRunning;
+            UiController.RunningCanceled += CancelRunning;
 
-            uiController.JumpPerformed += SetJump;
+            UiController.JumpPerformed += SetJump;
         }
 
         private void SetInputKeyboard(Vector2 value)

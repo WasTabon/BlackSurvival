@@ -1,4 +1,3 @@
-using DarkSurvival.Data.ScriptableObjects;
 using DarkSurvival.Scripts.Gameplay.Player;
 using DarkSurvival.Scripts.InputSystem;
 using DarkSurvival.Scripts.Systems.DI;
@@ -15,9 +14,7 @@ namespace DarkSurvival.Scripts.Systems.Management
     {
         [SerializeField] private Transform _playerSpawnPos;
         
-        [SerializeField] private Transform _slotsParent;
         [SerializeField] private InventoryView _inventoryView;
-        [SerializeField] private ItemData healthPotionItemData;
         [SerializeField] private UIView _uiView;
         private InventoryController _inventoryController;
         private InventoryModel _inventoryModel;
@@ -54,10 +51,6 @@ namespace DarkSurvival.Scripts.Systems.Management
             _updater.RegisterUpdatable(_uiController);
         
             CreatePlayerFactory();
-
-            _inventoryModel = new InventoryModel(1);
-            _inventoryController = gameObject.AddComponent<InventoryController>();
-            _inventoryController.Initialize(_inventoryModel, _inventoryView);
 
             CreateInventory(1);
             DependencyContainer.Instance.Register(_inventoryController);
@@ -104,7 +97,6 @@ namespace DarkSurvival.Scripts.Systems.Management
             _inventoryModel = new InventoryModel(slotCount);
             _inventoryController = gameObject.AddComponent<InventoryController>();
             _inventoryController.Initialize(_inventoryModel, _inventoryView);
-
         }
         
         private void CreatePlayerFactory()
