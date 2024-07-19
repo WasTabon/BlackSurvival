@@ -7,7 +7,7 @@ namespace DarkSurvival.Scripts.Gameplay.Player
 {
     public class PlayerCollectItems
     {
-        public event Action<bool> OnSeeCollectable; 
+        public event Action<bool, string> OnSeeCollectable; 
         
         private readonly LayerMask _playerLayer;
         private readonly InventoryController _inventoryController;
@@ -36,16 +36,16 @@ namespace DarkSurvival.Scripts.Gameplay.Player
             {
                 if (hit.collider.TryGetComponent(out ICollectable collectable))
                 {
-                    OnSeeCollectable?.Invoke(true);
+                    OnSeeCollectable?.Invoke(true, collectable.Name);
                 }
                 else
                 {
-                    //OnSeeCollectable?.Invoke(false);
+                    OnSeeCollectable?.Invoke(false, null);
                 }
             }
             else
             {
-                OnSeeCollectable?.Invoke(false);
+                OnSeeCollectable?.Invoke(false, null);
             }
         }
         

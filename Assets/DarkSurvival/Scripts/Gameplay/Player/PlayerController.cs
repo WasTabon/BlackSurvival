@@ -40,7 +40,7 @@ namespace DarkSurvival.Scripts.Gameplay.Player
             
             _runningMultiplier = ReadPlayerData().runSpeedMultiplier;
 
-            _playerCollectItems.OnSeeCollectable += _inputManager.UiController.ManageCanCollectAItem;
+            _playerCollectItems.OnSeeCollectable += _inputManager.UiController.ManageCanCollectAItemText;
             OnUpdateCalledFloat += _playerMovement.HandleMovement;
             OnUpdateCalled += _cameraController.UpdateCamera;
             OnUpdateCalled += _playerCollectItems.CheckForCollectables;

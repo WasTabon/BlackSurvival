@@ -34,6 +34,16 @@ namespace DarkSurvival.Scripts.Gameplay.Player
         {
             _horizontalRotation = _inputManager.HorizontalMouse * HorizontalSenitivity;
     
+            Debug.Log($"Horizontal Rotation: {_horizontalRotation}");
+            
+            if (Mathf.Abs(_horizontalRotation) < 0.1f)
+            {
+                Vector3 currentRotation = _playerTransform.rotation.eulerAngles;
+                _playerTransform.rotation = Quaternion.Euler(new Vector3(currentRotation.x, Mathf.Round(currentRotation.y), currentRotation.z));
+                Debug.Log($"Current rotation: {currentRotation}");
+                return;
+            }
+            
             _playerTransform.Rotate(Vector3.up, _horizontalRotation);
         }
 

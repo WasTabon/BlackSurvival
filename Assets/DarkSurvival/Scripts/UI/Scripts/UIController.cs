@@ -1,7 +1,10 @@
 using System;
+using DarkSurvival.Data.Serializables.Player;
+using DarkSurvival.Data.Serializables.UI;
 using UnityEngine;
 using DarkSurvival.Scripts.Interfaces;
 using DarkSurvival.Scripts.Systems.DI;
+using DarkSurvival.Scripts.Systems.Utils.JsonLoader;
 using TMPro;
 
 namespace DarkSurvival.Scripts.UI.Scripts
@@ -21,10 +24,14 @@ namespace DarkSurvival.Scripts.UI.Scripts
         [Inject] private InputControls _inputControls;
         [Inject] private UIView _uiView;
 
+        private UITextData _uiTextData;
+        
         private TextMeshProUGUI _canCollectText;
         
         private Vector2 _mousePosition;
 
+        private string _collectTextCheck;
+        
         private bool _canCollectItem;
         
         private float _mouseX;
@@ -32,6 +39,8 @@ namespace DarkSurvival.Scripts.UI.Scripts
 
         public void Initialize()
         {
+            _uiTextData = JsonLoader.LoadJsonFile<UITextData>("UITextData");
+            
             _canCollectText = _uiView.GetCollectItemText;
             
             _inputControls.Player.Move.performed += ctx => OnMovePerformed(ctx.ReadValue<Vector2>());
@@ -57,10 +66,30 @@ namespace DarkSurvival.Scripts.UI.Scripts
             OnMouseMovePerformed(_mousePosition);
         }
         
-        public void ManageCanCollectAItem(bool state)
+        public void ManageCanCollectAItemText(bool state, string itemName)
         {
-            _canCollectText.gameObject.SetActive(state);
+            SetActiveState(state);
+            SetText(state, itemName);
             _canCollectItem = state;
+        }
+
+        private void SetActiveState(bool state)
+        {
+            if (_canCollectText.gameObject.activeSelf != state)
+            {
+                _canCollectText.gameObject.SetActive(state);
+            }
+        }
+
+        private void SetText(bool state, string itemName)
+        {
+            if (!state || string.IsNullOrEmpty(itemName)) return;
+    
+            string newText = $"{_uiTextData.CollectText} {itemName}";
+            if (_canCollectText.text != newText)
+            {
+                _canCollectText.text = newText;
+            }
         }
         
         private void OnMovePerformed(Vector2 movement)

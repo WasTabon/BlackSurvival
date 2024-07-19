@@ -56,8 +56,8 @@ namespace DarkSurvival.Scripts.InputSystem
         }
         private void CancelMouse()
         {
-            VerticalMouse = 0;
-            HorizontalMouse = 0;
+            VerticalMouse = default;
+            HorizontalMouse = default;
         }
 
         private void CancelRunning()

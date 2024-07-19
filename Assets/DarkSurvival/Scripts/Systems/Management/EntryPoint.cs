@@ -60,7 +60,7 @@ namespace DarkSurvival.Scripts.Systems.Management
             //_inventoryController.AddItem(healthPotionItemData, 1);
 
             
-            Cursor.lockState = CursorLockMode.Locked;
+           Cursor.lockState = CursorLockMode.Locked;
         }
 
         private void InitializeInputControls()
