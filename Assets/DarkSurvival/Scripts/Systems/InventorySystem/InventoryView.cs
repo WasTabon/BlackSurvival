@@ -8,15 +8,16 @@ namespace DarkSurvival.Scripts.Systems.InventorySystem
         [SerializeField]
         private Transform _slotsParent;
 
-        private List<InventorySlotView> _slotViews;
+        private List<InventorySlotUI> _slotUIs;
 
         public void Initialize(int slotCount)
         {
-            _slotViews = new List<InventorySlotView>(slotCount);
+            _slotUIs = new List<InventorySlotUI>(slotCount);
             for (int i = 0; i < slotCount; i++)
             {
-                var slotView = new InventorySlotView(_slotsParent.GetChild(i));
-                _slotViews.Add(slotView);
+                var slotUI = _slotsParent.GetChild(i).GetComponent<InventorySlotUI>();
+                slotUI.Initialize(new InventorySlot());
+                _slotUIs.Add(slotUI);
             }
         }
 
@@ -24,7 +25,7 @@ namespace DarkSurvival.Scripts.Systems.InventorySystem
         {
             for (int i = 0; i < slots.Count; i++)
             {
-                _slotViews[i].UpdateView(slots[i]);
+                _slotUIs[i].Initialize(slots[i]);
             }
         }
     }
