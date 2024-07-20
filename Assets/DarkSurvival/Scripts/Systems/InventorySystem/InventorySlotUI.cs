@@ -43,12 +43,12 @@ namespace DarkSurvival.Scripts.Systems.InventorySystem
         {
             _canvasGroup.blocksRaycasts = true;
             _canvasGroup.alpha = 1.0f;
-            
-            var raycastedObect = eventData.pointerCurrentRaycast.gameObject;
-            
-            if (raycastedObect != null)
+
+            var raycastedObject = eventData.pointerCurrentRaycast.gameObject;
+
+            if (raycastedObject != null)
             {
-                var dropSlot = raycastedObect.GetComponent<InventorySlotUI>();
+                var dropSlot = raycastedObject.GetComponent<InventorySlotUI>();
 
                 if (dropSlot != null && dropSlot != this)
                 {
@@ -61,7 +61,17 @@ namespace DarkSurvival.Scripts.Systems.InventorySystem
 
         private void TransferItems(InventorySlotUI targetSlot)
         {
-            (targetSlot._slot, _slot) = (_slot, targetSlot._slot);
+            if (targetSlot._slot.IsEmpty)
+            {
+                targetSlot._slot.SetItem(_slot.ItemData, _slot.StackSize);
+                _slot.Clear();
+            }
+            else
+            {
+                int transferAmount = Mathf.Min(_slot.StackSize, targetSlot._slot.ItemData.MaxStackSize - targetSlot._slot.StackSize);
+                targetSlot._slot.AddToStack(transferAmount);
+                _slot.RemoveFromStack(transferAmount);
+            }
 
             targetSlot.UpdateUI();
             UpdateUI();
