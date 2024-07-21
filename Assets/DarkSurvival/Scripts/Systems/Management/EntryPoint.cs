@@ -105,6 +105,7 @@ namespace DarkSurvival.Scripts.Systems.Management
         private void CreateInventory(int slotCount)
         {
             _inventoryModel = new InventoryModel(slotCount);
+            DependencyContainer.Instance.InjectDependencies(_inventoryModel);
             _inventoryController = gameObject.AddComponent<InventoryController>();
             _inventoryController.Initialize(_inventoryModel, _inventoryView);
         }

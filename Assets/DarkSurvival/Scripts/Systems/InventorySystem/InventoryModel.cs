@@ -8,12 +8,16 @@ namespace DarkSurvival.Scripts.Systems.InventorySystem
 {
     public class InventoryModel
     {
+        private const string DropItemPath = "DefaultItemPrefab";
+        
         public event Action OnInventoryChanged;
         
         private List<InventorySlot> _slots;
         
         [InjectNamed("Player")] 
         private GameObject _characterInScene;
+
+        private GameObject _dropItemPrefab;
 
         public InventoryModel(int slotCount)
         {
@@ -22,6 +26,8 @@ namespace DarkSurvival.Scripts.Systems.InventorySystem
             {
                 _slots.Add(new InventorySlot());
             }
+            
+            _dropItemPrefab = Resources.Load<GameObject>(DropItemPath);
         }
 
         public IReadOnlyList<InventorySlot> Slots => _slots;
@@ -68,10 +74,8 @@ namespace DarkSurvival.Scripts.Systems.InventorySystem
 
         public void DropItem(ItemData itemData, int count)
         {
-            GameObject itemPrefab = Resources.Load<GameObject>("DefaultItemPrefab");
-            if (itemPrefab == null)
-                Debug.Log("No in resources");
-            GameObject droppedItem = UnityEngine.Object.Instantiate(itemPrefab, new Vector3(1,1,1), Quaternion.identity);
+            Vector3 position = _characterInScene.transform.position + _characterInScene.transform.forward * 2f + Vector3.up * 1f;
+            GameObject droppedItem = UnityEngine.Object.Instantiate(_dropItemPrefab, position, Quaternion.identity);
             DefaultItem defaultItem = droppedItem.GetComponent<DefaultItem>();
             defaultItem.Initialize(itemData, count);
         }

@@ -58,7 +58,7 @@ namespace DarkSurvival.Scripts.Systems.InventorySystem
                 {
                     TransferItems(dropSlot);
                 }
-                else
+                else 
                 {
                     _rectTransform.anchoredPosition = _originalPosition;
                 }

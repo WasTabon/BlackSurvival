@@ -1,6 +1,6 @@
 {
   "moveSpeed": 5,
   "runSpeedMultiplier": 2,
-  "jumpHeight": 7,
+  "jumpHeight": 500,
   "MaxCollectDistance": 5
 }
