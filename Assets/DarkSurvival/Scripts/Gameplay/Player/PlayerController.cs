@@ -4,6 +4,7 @@ using DarkSurvival.Scripts.InputSystem;
 using DarkSurvival.Scripts.Interfaces;
 using DarkSurvival.Scripts.Systems.DI;
 using DarkSurvival.Scripts.Systems.InventorySystem;
+using DarkSurvival.Scripts.Systems.Management.Cursor;
 using DarkSurvival.Scripts.Systems.Utils.JsonLoader;
 using UnityEngine;
 
@@ -18,8 +19,8 @@ namespace DarkSurvival.Scripts.Gameplay.Player
         private GameObject _characterInScene;
 
         [Inject] private InputManager _inputManager;
-
         [Inject] private InventoryController _inventoryController;
+        [Inject] private CursorController _cursorController;
 
         private float _runningMultiplier;
         
@@ -35,7 +36,7 @@ namespace DarkSurvival.Scripts.Gameplay.Player
             Transform headTransform = _characterInScene.transform.Find("Head");
             
             _playerMovement = new PlayerMovement(_rigidbody, ReadPlayerData().moveSpeed, ReadPlayerData().jumpHeight, _inputManager);
-            _cameraController = new PlayerCameraController(_characterInScene.transform, headTransform, _inputManager);
+            _cameraController = new PlayerCameraController(_characterInScene.transform, headTransform, _inputManager, _cursorController);
             _playerCollectItems = new PlayerCollectItems(_inventoryController, ReadPlayerData().MaxCollectDistance);
             
             _runningMultiplier = ReadPlayerData().runSpeedMultiplier;

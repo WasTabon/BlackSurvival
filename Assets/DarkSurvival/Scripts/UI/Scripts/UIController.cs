@@ -4,6 +4,7 @@ using DarkSurvival.Data.Serializables.UI;
 using UnityEngine;
 using DarkSurvival.Scripts.Interfaces;
 using DarkSurvival.Scripts.Systems.DI;
+using DarkSurvival.Scripts.Systems.Management.Cursor;
 using DarkSurvival.Scripts.Systems.Utils.JsonLoader;
 using TMPro;
 
@@ -25,6 +26,7 @@ namespace DarkSurvival.Scripts.UI.Scripts
         
         [Inject] private InputControls _inputControls;
         [Inject] private UIView _uiView;
+        [Inject] private CursorController _cursorController;
 
         private UITextData _uiTextData;
         private TextMeshProUGUI _canCollectText;
@@ -43,6 +45,7 @@ namespace DarkSurvival.Scripts.UI.Scripts
             SetupInputActions();
 
             InventoryOpen += ManageInventoryPanel;
+            InventoryOpen += ManageCursor;
         }
         
         public void Update()
@@ -63,6 +66,14 @@ namespace DarkSurvival.Scripts.UI.Scripts
                     _canCollectText.text = newText;
                 }
             }
+        }
+
+        private void ManageCursor(bool state)
+        {
+            if (state)
+                _cursorController.LockCursor();
+            else
+                _cursorController.UnlockCursor();
         }
         
         private void SetupInputActions()

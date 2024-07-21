@@ -4,6 +4,7 @@ using DarkSurvival.Scripts.InputSystem;
 using DarkSurvival.Scripts.Systems.DI;
 using DarkSurvival.Scripts.Systems.Factory;
 using DarkSurvival.Scripts.Systems.InventorySystem;
+using DarkSurvival.Scripts.Systems.Management.Cursor;
 using DarkSurvival.Scripts.Systems.Utils;
 using DarkSurvival.Scripts.UI.Scripts;
 using Unity.Mathematics;
@@ -24,6 +25,8 @@ namespace DarkSurvival.Scripts.Systems.Management
         private UIController _uiController;
         private PlayerController _playerController;
 
+        private CursorController _cursorController;
+        
         private Updater _updater;
 
         private InputControls _inputControls;
@@ -37,6 +40,10 @@ namespace DarkSurvival.Scripts.Systems.Management
 
         private void Initialize()
         {
+            CreateCursorController();
+            DependencyContainer.Instance.Register(_cursorController);
+            _cursorController.LockCursor();
+            
             InitializeInputControls();
         
             DependencyContainer.Instance.Register(_inputControls);
@@ -57,8 +64,6 @@ namespace DarkSurvival.Scripts.Systems.Management
             DependencyContainer.Instance.Register(_inventoryController);
             
             SpawnPlayer();
-            
-           //Cursor.lockState = CursorLockMode.Locked;
         }
 
         private void InitializeInputControls()
@@ -80,7 +85,12 @@ namespace DarkSurvival.Scripts.Systems.Management
 
             _uiController.Initialize();
         }
-    
+
+        private void CreateCursorController()
+        {
+            _cursorController = new CursorController();
+        }
+        
         private void InitializeUpdater()
         {
             GameObject created = new GameObject("Updater");

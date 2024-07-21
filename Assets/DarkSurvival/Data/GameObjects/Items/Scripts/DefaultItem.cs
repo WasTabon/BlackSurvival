@@ -1,4 +1,3 @@
-using System;
 using DarkSurvival.Data.ScriptableObjects;
 using DarkSurvival.Scripts.Interfaces;
 using UnityEngine;

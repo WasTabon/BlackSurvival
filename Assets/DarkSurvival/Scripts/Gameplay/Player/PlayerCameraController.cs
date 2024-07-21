@@ -1,4 +1,5 @@
 using DarkSurvival.Scripts.InputSystem;
+using DarkSurvival.Scripts.Systems.Management.Cursor;
 using UnityEngine;
 
 namespace DarkSurvival.Scripts.Gameplay.Player
@@ -13,22 +14,27 @@ namespace DarkSurvival.Scripts.Gameplay.Player
         private readonly Transform _playerTransform;
         private readonly Transform _headTransform;
         private readonly InputManager _inputManager;
+        private readonly CursorController _cursorController;
         
         private float _verticalRotation;
         private float _horizontalRotation;
         private float _currentYRotation;
         
-        public PlayerCameraController(Transform playerTransform, Transform headTransform, InputManager inputManager)
+        public PlayerCameraController(Transform playerTransform, Transform headTransform, InputManager inputManager, CursorController cursorController)
         {
             _playerTransform = playerTransform;
             _headTransform = headTransform;
             _inputManager = inputManager;
+            _cursorController = cursorController;
         }
 
         public void UpdateCamera()
         {
-            RotatePlayer();
-            RotateHead();
+            if (_cursorController.CanSeeCursor == false)
+            {
+                RotatePlayer();
+                RotateHead();   
+            }
         }
 
         private void RotatePlayer()
