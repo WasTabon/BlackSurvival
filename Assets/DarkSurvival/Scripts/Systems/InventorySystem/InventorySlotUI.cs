@@ -10,7 +10,7 @@ namespace DarkSurvival.Scripts.Systems.InventorySystem
         [SerializeField] private Image _iconImage;
         [SerializeField] private TextMeshProUGUI _stackSizeText;
 
-        private InventorySlot _slot;
+        public InventorySlot slot;
         private CanvasGroup _canvasGroup;
         private RectTransform _rectTransform;
         private Vector2 _originalPosition;
@@ -19,7 +19,7 @@ namespace DarkSurvival.Scripts.Systems.InventorySystem
 
         public void Initialize(InventorySlot slot, InventoryController inventoryController)
         {
-            _slot = slot;
+            this.slot = slot;
             _inventoryController = inventoryController;
             UpdateUI();
         }
@@ -48,17 +48,18 @@ namespace DarkSurvival.Scripts.Systems.InventorySystem
             _canvasGroup.blocksRaycasts = true;
             _canvasGroup.alpha = 1.0f;
 
-            var raycastedObject = eventData.pointerCurrentRaycast.gameObject;
+            GameObject raycastedObject = eventData.pointerCurrentRaycast.gameObject;
+            InventorySlotUI dropSlot = null;
 
             if (raycastedObject != null)
             {
-                var dropSlot = raycastedObject.GetComponent<InventorySlotUI>();
+                dropSlot = raycastedObject.GetComponentInParent<InventorySlotUI>();
 
                 if (dropSlot != null && dropSlot != this)
                 {
                     TransferItems(dropSlot);
                 }
-                else 
+                else
                 {
                     _rectTransform.anchoredPosition = _originalPosition;
                 }
@@ -73,8 +74,19 @@ namespace DarkSurvival.Scripts.Systems.InventorySystem
 
         private void TransferItems(InventorySlotUI targetSlot)
         {
-            targetSlot._slot.SetItem(_slot.ItemData, _slot.StackSize);
-            _slot.Clear();
+            if (!targetSlot.slot.IsEmpty)
+            {
+                var tempItemData = targetSlot.slot.ItemData;
+                var tempItemCount = targetSlot.slot.StackSize;
+
+                targetSlot.slot.SetItem(slot.ItemData, slot.StackSize);
+                slot.SetItem(tempItemData, tempItemCount);
+            }
+            else
+            {
+                targetSlot.slot.SetItem(slot.ItemData, slot.StackSize);
+                slot.Clear();
+            }
 
             targetSlot.UpdateUI();
             UpdateUI();
@@ -83,15 +95,15 @@ namespace DarkSurvival.Scripts.Systems.InventorySystem
         private void DropItemOutside()
         {
             int slotIndex = transform.GetSiblingIndex();
-            var itemData = _slot.ItemData;
-            var itemCount = _slot.StackSize;
+            var itemData = slot.ItemData;
+            var itemCount = slot.StackSize;
             _inventoryController.DropItem(itemData, itemCount);
             _inventoryController.RemoveItem(slotIndex, itemCount);
         }
 
         private void UpdateUI()
         {
-            if (_slot.IsEmpty)
+            if (slot.IsEmpty)
             {
                 _iconImage.enabled = false;
                 _stackSizeText.text = "";
@@ -99,8 +111,8 @@ namespace DarkSurvival.Scripts.Systems.InventorySystem
             else
             {
                 _iconImage.enabled = true;
-                _iconImage.sprite = _slot.ItemData.Icon;
-                _stackSizeText.text = _slot.StackSize.ToString();
+                _iconImage.sprite = slot.ItemData.Icon;
+                _stackSizeText.text = slot.StackSize.ToString();
             }
         }
     }

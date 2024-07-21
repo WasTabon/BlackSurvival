@@ -1,9 +1,8 @@
-using System;
 using System.Collections.Generic;
 using DarkSurvival.Scripts.Interfaces;
 using UnityEngine;
 
-namespace DarkSurvival.Scripts.Systems.Utils
+namespace DarkSurvival.Scripts.Systems.Utils.Updater
 {
     public class Updater : MonoBehaviour
     {

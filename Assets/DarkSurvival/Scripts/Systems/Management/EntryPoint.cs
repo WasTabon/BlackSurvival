@@ -6,6 +6,7 @@ using DarkSurvival.Scripts.Systems.Factory;
 using DarkSurvival.Scripts.Systems.InventorySystem;
 using DarkSurvival.Scripts.Systems.Management.Cursor;
 using DarkSurvival.Scripts.Systems.Utils;
+using DarkSurvival.Scripts.Systems.Utils.Updater;
 using DarkSurvival.Scripts.UI.Scripts;
 using Unity.Mathematics;
 using UnityEngine;
