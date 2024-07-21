@@ -54,13 +54,13 @@ namespace DarkSurvival.Scripts.UI.Scripts
             MouseMoved?.Invoke(_mousePosition);
         }
         
-        public void ManageCanCollectAItemText(bool state, string itemName)
+        public void ManageCanCollectAItemText(bool state, string itemName, int itemsCount)
         {
             SetActiveState(_canCollectText.gameObject, state);
 
             if (state && !string.IsNullOrEmpty(itemName))
             {
-                string newText = $"{_uiTextData.CollectText} {itemName}";
+                string newText = $"{_uiTextData.CollectText} {itemsCount} {itemName}";
                 if (_canCollectText.text != newText)
                 {
                     _canCollectText.text = newText;

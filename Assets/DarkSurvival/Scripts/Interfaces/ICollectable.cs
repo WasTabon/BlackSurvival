@@ -1,11 +1,11 @@
-using DarkSurvival.Data.ScriptableObjects;
+    using DarkSurvival.Data.ScriptableObjects;
 
-namespace DarkSurvival.Scripts.Interfaces
-{
-    public interface ICollectable
+    namespace DarkSurvival.Scripts.Interfaces
     {
-        string Name { get; set; }
-        int ItemsCount { get; set; }
-        ItemData Collect();
+        public interface ICollectable
+        {
+            string Name { get; set; }
+            int ItemsCount { get; set; }
+            ItemData Collect();
+        }
     }
-}
