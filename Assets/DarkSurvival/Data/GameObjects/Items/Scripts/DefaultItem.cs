@@ -13,12 +13,14 @@ namespace DarkSurvival.Data.GameObjects.Items.Scripts
 
         private void Awake()
         {
-            Name = _itemData.Name;
+            if (_itemData != null)
+                Name = _itemData.Name;
         }
 
         public void Initialize(ItemData itemData, int itemsCount)
         {
             _itemData = itemData;
+            Name = _itemData.Name;
             ItemsCount = itemsCount;
         }
         

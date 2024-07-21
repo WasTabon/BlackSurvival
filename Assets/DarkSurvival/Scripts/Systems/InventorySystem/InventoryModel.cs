@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DarkSurvival.Data.GameObjects.Items.Scripts;
 using DarkSurvival.Data.ScriptableObjects;
 using UnityEngine;
 
@@ -10,6 +11,9 @@ namespace DarkSurvival.Scripts.Systems.InventorySystem
         public event Action OnInventoryChanged;
         
         private List<InventorySlot> _slots;
+        
+        [InjectNamed("Player")] 
+        private GameObject _characterInScene;
 
         public InventoryModel(int slotCount)
         {
@@ -44,6 +48,7 @@ namespace DarkSurvival.Scripts.Systems.InventorySystem
                 }
             }
         }
+
         public InventorySlot GetItem(int slotIndex)
         {
             if (slotIndex < 0 || slotIndex >= _slots.Count)
@@ -59,6 +64,16 @@ namespace DarkSurvival.Scripts.Systems.InventorySystem
             if (slotIndex < 0 || slotIndex >= _slots.Count) throw new ArgumentOutOfRangeException();
             _slots[slotIndex].RemoveFromStack(count);
             OnInventoryChanged?.Invoke();
+        }
+
+        public void DropItem(ItemData itemData, int count)
+        {
+            GameObject itemPrefab = Resources.Load<GameObject>("DefaultItemPrefab");
+            if (itemPrefab == null)
+                Debug.Log("No in resources");
+            GameObject droppedItem = UnityEngine.Object.Instantiate(itemPrefab, new Vector3(1,1,1), Quaternion.identity);
+            DefaultItem defaultItem = droppedItem.GetComponent<DefaultItem>();
+            defaultItem.Initialize(itemData, count);
         }
     }
 }

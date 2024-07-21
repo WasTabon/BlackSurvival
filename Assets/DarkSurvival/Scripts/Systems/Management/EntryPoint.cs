@@ -60,10 +60,12 @@ namespace DarkSurvival.Scripts.Systems.Management
         
             CreatePlayerFactory();
 
+            SpawnPlayer();
+            
             CreateInventory(3);
             DependencyContainer.Instance.Register(_inventoryController);
             
-            SpawnPlayer();
+            InitializePlayer();
         }
 
         private void InitializeInputControls()
@@ -116,7 +118,10 @@ namespace DarkSurvival.Scripts.Systems.Management
         {
             GameObject player = _playerFactory.GetProduct(_playerSpawnPos.position, quaternion.identity);
             DependencyContainer.Instance.Register("Player", player);
-            
+        }
+
+        private void InitializePlayer()
+        {
             _playerController = new PlayerController();
             DependencyContainer.Instance.InjectDependencies(_playerController);
             DependencyContainer.Instance.InjectDependencies(_inventoryController);

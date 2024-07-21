@@ -14,10 +14,13 @@ namespace DarkSurvival.Scripts.Systems.InventorySystem
         private CanvasGroup _canvasGroup;
         private RectTransform _rectTransform;
         private Vector2 _originalPosition;
+        private InventoryController _inventoryController;
+        private Canvas _canvas;
 
-        public void Initialize(InventorySlot slot)
+        public void Initialize(InventorySlot slot, InventoryController inventoryController)
         {
             _slot = slot;
+            _inventoryController = inventoryController;
             UpdateUI();
         }
 
@@ -25,6 +28,7 @@ namespace DarkSurvival.Scripts.Systems.InventorySystem
         {
             _rectTransform = GetComponent<RectTransform>();
             _canvasGroup = gameObject.AddComponent<CanvasGroup>();
+            _canvas = GetComponentInParent<Canvas>();
         }
 
         public void OnBeginDrag(PointerEventData eventData)
@@ -54,6 +58,14 @@ namespace DarkSurvival.Scripts.Systems.InventorySystem
                 {
                     TransferItems(dropSlot);
                 }
+                else
+                {
+                    _rectTransform.anchoredPosition = _originalPosition;
+                }
+            }
+            else
+            {
+                DropItemOutside();
             }
 
             _rectTransform.anchoredPosition = _originalPosition;
@@ -61,20 +73,20 @@ namespace DarkSurvival.Scripts.Systems.InventorySystem
 
         private void TransferItems(InventorySlotUI targetSlot)
         {
-            if (targetSlot._slot.IsEmpty)
-            {
-                targetSlot._slot.SetItem(_slot.ItemData, _slot.StackSize);
-                _slot.Clear();
-            }
-            else
-            {
-                int transferAmount = Mathf.Min(_slot.StackSize, targetSlot._slot.ItemData.MaxStackSize - targetSlot._slot.StackSize);
-                targetSlot._slot.AddToStack(transferAmount);
-                _slot.RemoveFromStack(transferAmount);
-            }
+            targetSlot._slot.SetItem(_slot.ItemData, _slot.StackSize);
+            _slot.Clear();
 
             targetSlot.UpdateUI();
             UpdateUI();
+        }
+
+        private void DropItemOutside()
+        {
+            int slotIndex = transform.GetSiblingIndex();
+            var itemData = _slot.ItemData;
+            var itemCount = _slot.StackSize;
+            _inventoryController.DropItem(itemData, itemCount);
+            _inventoryController.RemoveItem(slotIndex, itemCount);
         }
 
         private void UpdateUI()

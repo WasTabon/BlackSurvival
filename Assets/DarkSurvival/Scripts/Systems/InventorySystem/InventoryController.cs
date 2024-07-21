@@ -14,7 +14,7 @@ namespace DarkSurvival.Scripts.Systems.InventorySystem
             _view = view;
 
             _model.OnInventoryChanged += UpdateView;
-            _view.Initialize(_model.Slots.Count);
+            _view.Initialize(_model.Slots.Count, this);
         }
 
         public void AddItem(ItemData itemData, int count)
@@ -31,10 +31,14 @@ namespace DarkSurvival.Scripts.Systems.InventorySystem
         {
             _model.RemoveItem(slotIndex, count);
         }
+        public void DropItem(ItemData itemData, int count)
+        {
+            _model.DropItem(itemData, count);
+        }
 
         private void UpdateView()
         {
-            _view.UpdateView(_model.Slots);
+            _view.UpdateView(_model.Slots, this);
         }
     }
 }
