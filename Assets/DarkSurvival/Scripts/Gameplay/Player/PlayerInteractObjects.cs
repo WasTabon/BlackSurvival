@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace DarkSurvival.Scripts.Gameplay.Player
 {
-    public class PlayerCollectItems
+    public class PlayerInteractObjects
     {
         public event Action<bool, string, int> OnSeeCollectable; 
         
@@ -18,7 +18,7 @@ namespace DarkSurvival.Scripts.Gameplay.Player
 
         private readonly int layerMask;
         
-        public PlayerCollectItems(InventoryController inventoryController, int maxCollectDistance)
+        public PlayerInteractObjects(InventoryController inventoryController, int maxCollectDistance)
         {
             _inventoryController = inventoryController;
             _maxCollectDistance = maxCollectDistance;

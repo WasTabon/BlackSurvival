@@ -22,7 +22,7 @@ namespace DarkSurvival.Scripts.UI.Scripts
 
         public event Action JumpPerformed;
         public event Action<bool> InventoryOpen;
-        public event Action CollectItem;
+        public event Action InteractWithObject;
         
         [Inject] private InputControls _inputControls;
         [Inject] private UIView _uiView;
@@ -92,7 +92,7 @@ namespace DarkSurvival.Scripts.UI.Scripts
             
             _inputControls.Player.OpenInventory.performed += _ => InventoryOpen?.Invoke(_isInventoryOpen);
             
-            _inputControls.Player.CollectItem.performed += _ => CollectItem?.Invoke();
+            _inputControls.Player.InteractWithObject.performed += _ => InteractWithObject?.Invoke();
         }
 
         private void ManageInventoryPanel(bool state)

@@ -82,7 +82,7 @@ public partial class @InputControls : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""CollectItem"",
+                    ""name"": ""InteractWithObject"",
                     ""type"": ""Button"",
                     ""id"": ""abe28b6b-85db-48fd-bcad-c0f57aa8836e"",
                     ""expectedControlType"": ""Button"",
@@ -209,7 +209,7 @@ public partial class @InputControls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""CollectItem"",
+                    ""action"": ""InteractWithObject"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -226,7 +226,7 @@ public partial class @InputControls : IInputActionCollection2, IDisposable
         m_Player_MouseX = m_Player.FindAction("MouseX", throwIfNotFound: true);
         m_Player_MouseY = m_Player.FindAction("MouseY", throwIfNotFound: true);
         m_Player_OpenInventory = m_Player.FindAction("OpenInventory", throwIfNotFound: true);
-        m_Player_CollectItem = m_Player.FindAction("CollectItem", throwIfNotFound: true);
+        m_Player_InteractWithObject = m_Player.FindAction("InteractWithObject", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -292,7 +292,7 @@ public partial class @InputControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_MouseX;
     private readonly InputAction m_Player_MouseY;
     private readonly InputAction m_Player_OpenInventory;
-    private readonly InputAction m_Player_CollectItem;
+    private readonly InputAction m_Player_InteractWithObject;
     public struct PlayerActions
     {
         private @InputControls m_Wrapper;
@@ -303,7 +303,7 @@ public partial class @InputControls : IInputActionCollection2, IDisposable
         public InputAction @MouseX => m_Wrapper.m_Player_MouseX;
         public InputAction @MouseY => m_Wrapper.m_Player_MouseY;
         public InputAction @OpenInventory => m_Wrapper.m_Player_OpenInventory;
-        public InputAction @CollectItem => m_Wrapper.m_Player_CollectItem;
+        public InputAction @InteractWithObject => m_Wrapper.m_Player_InteractWithObject;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -331,9 +331,9 @@ public partial class @InputControls : IInputActionCollection2, IDisposable
                 @OpenInventory.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnOpenInventory;
                 @OpenInventory.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnOpenInventory;
                 @OpenInventory.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnOpenInventory;
-                @CollectItem.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCollectItem;
-                @CollectItem.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCollectItem;
-                @CollectItem.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCollectItem;
+                @InteractWithObject.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteractWithObject;
+                @InteractWithObject.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteractWithObject;
+                @InteractWithObject.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteractWithObject;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -356,9 +356,9 @@ public partial class @InputControls : IInputActionCollection2, IDisposable
                 @OpenInventory.started += instance.OnOpenInventory;
                 @OpenInventory.performed += instance.OnOpenInventory;
                 @OpenInventory.canceled += instance.OnOpenInventory;
-                @CollectItem.started += instance.OnCollectItem;
-                @CollectItem.performed += instance.OnCollectItem;
-                @CollectItem.canceled += instance.OnCollectItem;
+                @InteractWithObject.started += instance.OnInteractWithObject;
+                @InteractWithObject.performed += instance.OnInteractWithObject;
+                @InteractWithObject.canceled += instance.OnInteractWithObject;
             }
         }
     }
@@ -371,6 +371,6 @@ public partial class @InputControls : IInputActionCollection2, IDisposable
         void OnMouseX(InputAction.CallbackContext context);
         void OnMouseY(InputAction.CallbackContext context);
         void OnOpenInventory(InputAction.CallbackContext context);
-        void OnCollectItem(InputAction.CallbackContext context);
+        void OnInteractWithObject(InputAction.CallbackContext context);
     }
 }
