@@ -44,9 +44,9 @@ namespace DarkSurvival.Scripts.Gameplay.Player
             _playerInteractObjects.OnSeeCollectable += _inputManager.UiController.ManageCanCollectAItemText;
             OnUpdateCalledFloat += _playerMovement.HandleMovement;
             OnUpdateCalled += _cameraController.UpdateCamera;
-            OnUpdateCalled += _playerInteractObjects.CheckForCollectables;
+            OnUpdateCalled += _playerInteractObjects.CheckForItems;
             _inputManager.JumpPerformed += _playerMovement.HandleJump;
-            _inputManager.InteractPerformed += _playerInteractObjects.Collect;
+            _inputManager.InteractPerformed += _playerInteractObjects.UseItem;
         }
 
         public void Update()

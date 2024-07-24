@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using DarkSurvival.Data.Serializables.Player;
 using DarkSurvival.Data.Serializables.UI;
 using UnityEngine;
@@ -6,6 +7,7 @@ using DarkSurvival.Scripts.Interfaces;
 using DarkSurvival.Scripts.Systems.DI;
 using DarkSurvival.Scripts.Systems.Management.Cursor;
 using DarkSurvival.Scripts.Systems.Utils.JsonLoader;
+using DarkSurvival.Scripts.Systems.Utils.MessageBus;
 using TMPro;
 
 namespace DarkSurvival.Scripts.UI.Scripts
@@ -28,6 +30,8 @@ namespace DarkSurvival.Scripts.UI.Scripts
         [Inject] private UIView _uiView;
         [Inject] private CursorController _cursorController;
 
+        private Dictionary<string, RectTransform> _ineractablePanels;
+        
         private UITextData _uiTextData;
         private TextMeshProUGUI _canCollectText;
         
@@ -46,6 +50,13 @@ namespace DarkSurvival.Scripts.UI.Scripts
 
             InventoryOpen += ManageInventoryPanel;
             InventoryOpen += ManageCursor;
+            
+            _ineractablePanels = new Dictionary<string, RectTransform>
+            {
+                { "WorkbenchPanel", _uiView.WorkbenchTransform },
+            };
+            
+            MessageBus.Subscribe<InteractionMessage>(HandleInteractEvent);
         }
         
         public void Update()
@@ -68,6 +79,14 @@ namespace DarkSurvival.Scripts.UI.Scripts
             }
         }
 
+        private void HandleInteractEvent(InteractionMessage message)
+        {
+            if (_ineractablePanels.ContainsKey(message.InteractableName))
+            {
+                _ineractablePanels[message.InteractableName].gameObject.SetActive(true);
+            }
+        }
+        
         private void ManageCursor(bool state)
         {
             if (state)
