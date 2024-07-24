@@ -607,6 +607,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _collectItemText: {fileID: 14978453}
   _inventoryTransform: {fileID: 1685650698}
+  _workbenchTransform: {fileID: 194246462}
 --- !u!4 &280772680
 Transform:
   m_ObjectHideFlags: 0
@@ -2648,6 +2649,7 @@ GameObject:
   - component: {fileID: 1688842299}
   - component: {fileID: 1688842298}
   - component: {fileID: 1688842297}
+  - component: {fileID: 1688842301}
   m_Layer: 0
   m_Name: Workbench
   m_TagString: Untagged
@@ -2733,6 +2735,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1688842301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1688842296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68de1e30fbf9f8242b07effaf33f5801, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1700725428
 GameObject:
   m_ObjectHideFlags: 0

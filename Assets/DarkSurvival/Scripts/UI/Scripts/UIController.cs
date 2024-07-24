@@ -33,7 +33,7 @@ namespace DarkSurvival.Scripts.UI.Scripts
         private Dictionary<string, RectTransform> _ineractablePanels;
         
         private UITextData _uiTextData;
-        private TextMeshProUGUI _canCollectText;
+        private TextMeshProUGUI _canInteractText;
         
         private Vector2 _mousePosition;
         private bool _canCollectItem;
@@ -44,7 +44,7 @@ namespace DarkSurvival.Scripts.UI.Scripts
         public void Initialize()
         {
             _uiTextData = JsonLoader.LoadJsonFile<UITextData>("UITextData");
-            _canCollectText = _uiView.GetCollectItemText;
+            _canInteractText = _uiView.GetCollectItemText;
             
             SetupInputActions();
 
@@ -67,14 +67,28 @@ namespace DarkSurvival.Scripts.UI.Scripts
         
         public void ManageCanCollectAItemText(bool state, string itemName, int itemsCount)
         {
-            SetActiveState(_canCollectText.gameObject, state);
+            SetActiveState(_canInteractText.gameObject, state);
 
             if (state && !string.IsNullOrEmpty(itemName))
             {
                 string newText = $"{_uiTextData.CollectText} {itemsCount} {itemName}";
-                if (_canCollectText.text != newText)
+                if (_canInteractText.text != newText)
                 {
-                    _canCollectText.text = newText;
+                    _canInteractText.text = newText;
+                }
+            }
+        }
+
+        public void ManageInteractText(bool state)
+        {
+            SetActiveState(_canInteractText.gameObject, state);
+
+            if (state)
+            {
+                string newText = $"E";
+                if (_canInteractText.text != newText)
+                {
+                    _canInteractText.text = newText;
                 }
             }
         }
