@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 14978454}
   - component: {fileID: 14978453}
   m_Layer: 5
-  m_Name: CollectItemText
+  m_Name: InteractItemText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

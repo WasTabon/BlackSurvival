@@ -83,9 +83,9 @@ namespace DarkSurvival.Scripts.Gameplay.Player
         {
             _inventoryController.AddItem(collectable.Collect(), collectable.ItemsCount);
         }
-        private void HandleInteractable(IInteractable oInteractable)
+        private void HandleInteractable(IInteractable interactable)
         {
-           
+           interactable.Interact();
         }
     }
 }

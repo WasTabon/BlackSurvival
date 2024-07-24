@@ -97,7 +97,7 @@ namespace DarkSurvival.Scripts.UI.Scripts
         {
             if (_ineractablePanels.ContainsKey(message.InteractableName))
             {
-                _ineractablePanels[message.InteractableName].gameObject.SetActive(true);
+                SetActiveState(_ineractablePanels[message.InteractableName].gameObject, true);
             }
         }
         
