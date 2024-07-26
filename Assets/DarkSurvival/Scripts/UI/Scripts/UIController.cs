@@ -49,7 +49,6 @@ namespace DarkSurvival.Scripts.UI.Scripts
             SetupInputActions();
 
             InventoryOpen += ManageInventoryPanel;
-            InventoryOpen += ManageCursor;
             
             _ineractablePanels = new Dictionary<string, RectTransform>
             {
@@ -138,6 +137,7 @@ namespace DarkSurvival.Scripts.UI.Scripts
         {
             if (panel.activeSelf != state)
             {
+                ManageCursor(!state);
                 panel.SetActive(state);
             }
         }
