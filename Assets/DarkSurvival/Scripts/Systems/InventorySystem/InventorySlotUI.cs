@@ -10,6 +10,8 @@ namespace DarkSurvival.Scripts.Systems.InventorySystem
         [SerializeField] private Image _iconImage;
         [SerializeField] private TextMeshProUGUI _stackSizeText;
 
+        private int _id;
+        
         public InventorySlot slot;
         private CanvasGroup _canvasGroup;
         private RectTransform _rectTransform;
@@ -17,8 +19,9 @@ namespace DarkSurvival.Scripts.Systems.InventorySystem
         private InventoryController _inventoryController;
         private Canvas _canvas;
 
-        public void Initialize(InventorySlot slot, InventoryController inventoryController)
+        public void Initialize(InventorySlot slot, InventoryController inventoryController, int id)
         {
+            _id = id;
             this.slot = slot;
             _inventoryController = inventoryController;
             UpdateUI();
@@ -94,11 +97,10 @@ namespace DarkSurvival.Scripts.Systems.InventorySystem
 
         private void DropItemOutside()
         {
-            int slotIndex = transform.GetSiblingIndex();
             var itemData = slot.ItemData;
             var itemCount = slot.StackSize;
             _inventoryController.DropItem(itemData, itemCount);
-            _inventoryController.RemoveItem(slotIndex, itemCount);
+            _inventoryController.RemoveItem(_id, itemCount);
         }
 
         private void UpdateUI()

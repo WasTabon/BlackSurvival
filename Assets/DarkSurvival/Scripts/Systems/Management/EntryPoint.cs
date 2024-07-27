@@ -63,7 +63,7 @@ namespace DarkSurvival.Scripts.Systems.Management
 
             SpawnPlayer();
             
-            CreateInventory(3);
+            CreateInventory(8);
             DependencyContainer.Instance.Register(_inventoryController);
             
             InitializePlayer();

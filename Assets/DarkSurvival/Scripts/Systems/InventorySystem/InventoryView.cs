@@ -5,19 +5,29 @@ namespace DarkSurvival.Scripts.Systems.InventorySystem
 {
     public class InventoryView : MonoBehaviour
     {
-        [SerializeField]
-        private Transform _slotsParent;
+        [SerializeField] private Transform _slotsParent;
 
-        private List<InventorySlotUI> _slotUIs;
+        [SerializeField] private List<InventorySlotUI> _slotUIs;
 
         public void Initialize(int slotCount, InventoryController inventoryController)
         {
             _slotUIs = new List<InventorySlotUI>(slotCount);
+
+            var slotUIs = _slotsParent.GetComponentsInChildren<InventorySlotUI>(true);
+
             for (int i = 0; i < slotCount; i++)
             {
-                var slotUI = _slotsParent.GetChild(i).GetComponent<InventorySlotUI>();
-                slotUI.Initialize(new InventorySlot(), inventoryController);
-                _slotUIs.Add(slotUI);
+                if (i < slotUIs.Length)
+                {
+                    var slotUI = slotUIs[i];
+                    slotUI.Initialize(new InventorySlot(), inventoryController, i);
+                    _slotUIs.Add(slotUI);
+                }
+                else
+                {
+                    Debug.LogWarning($"Slot count {slotCount} is greater than available slot UIs {slotUIs.Length}");
+                    break;
+                }
             }
         }
 
@@ -25,7 +35,7 @@ namespace DarkSurvival.Scripts.Systems.InventorySystem
         {
             for (int i = 0; i < slots.Count; i++)
             {
-                _slotUIs[i].Initialize(slots[i], inventoryController);
+                _slotUIs[i].Initialize(slots[i], inventoryController, i);
             }
         }
     }

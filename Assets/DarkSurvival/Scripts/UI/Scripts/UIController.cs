@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using DarkSurvival.Data.Serializables.Player;
 using DarkSurvival.Data.Serializables.UI;
 using UnityEngine;
@@ -9,6 +10,7 @@ using DarkSurvival.Scripts.Systems.Management.Cursor;
 using DarkSurvival.Scripts.Systems.Utils.JsonLoader;
 using DarkSurvival.Scripts.Systems.Utils.MessageBus;
 using TMPro;
+using UnityEngine.UI;
 
 namespace DarkSurvival.Scripts.UI.Scripts
 {
@@ -30,6 +32,8 @@ namespace DarkSurvival.Scripts.UI.Scripts
         [Inject] private UIView _uiView;
         [Inject] private CursorController _cursorController;
 
+        private UICraftPanel _uiCraftPanel;
+        
         private Dictionary<string, RectTransform> _ineractablePanels;
         
         private UITextData _uiTextData;
@@ -55,6 +59,8 @@ namespace DarkSurvival.Scripts.UI.Scripts
                 { "WorkbenchPanel", _uiView.WorkbenchTransform },
             };
             
+            InitializeUICraftPanel(_uiView);
+            
             MessageBus.Subscribe<InteractionMessage>(HandleInteractEvent);
         }
         
@@ -66,7 +72,7 @@ namespace DarkSurvival.Scripts.UI.Scripts
         
         public void ManageCanCollectAItemText(bool state, string itemName, int itemsCount)
         {
-            SetActiveState(_canInteractText.gameObject, state);
+            SetActiveStateText(_canInteractText.gameObject, state);
 
             if (state && !string.IsNullOrEmpty(itemName))
             {
@@ -80,7 +86,7 @@ namespace DarkSurvival.Scripts.UI.Scripts
 
         public void ManageInteractText(bool state)
         {
-            SetActiveState(_canInteractText.gameObject, state);
+            SetActiveStateText(_canInteractText.gameObject, state);
 
             if (state)
             {
@@ -96,7 +102,7 @@ namespace DarkSurvival.Scripts.UI.Scripts
         {
             if (_ineractablePanels.ContainsKey(message.InteractableName))
             {
-                SetActiveState(_ineractablePanels[message.InteractableName].gameObject, true);
+                SetActiveStatePanel(_ineractablePanels[message.InteractableName].gameObject, true);
             }
         }
         
@@ -127,18 +133,30 @@ namespace DarkSurvival.Scripts.UI.Scripts
             _inputControls.Player.InteractWithObject.performed += _ => InteractWithObject?.Invoke();
         }
 
+        private void InitializeUICraftPanel(UIView uiView)
+        {
+            _uiCraftPanel = new UICraftPanel(uiView);
+        }
+        
         private void ManageInventoryPanel(bool state)
         {
             _isInventoryOpen = !_isInventoryOpen;
-            SetActiveState(_uiView.GetInventoryTransform.gameObject, _isInventoryOpen);
+            SetActiveStatePanel(_uiView.GetInventoryTransform.gameObject, _isInventoryOpen);
         }
 
-        private void SetActiveState(GameObject panel, bool state)
+        private void SetActiveStatePanel(GameObject panel, bool state)
         {
             if (panel.activeSelf != state)
             {
                 ManageCursor(!state);
                 panel.SetActive(state);
+            }
+        }
+        private void SetActiveStateText(GameObject textObject, bool state)
+        {
+            if (textObject.activeSelf != state)
+            {
+                textObject.SetActive(state);
             }
         }
     }
