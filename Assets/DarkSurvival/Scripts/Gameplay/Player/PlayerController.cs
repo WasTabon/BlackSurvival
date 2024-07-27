@@ -32,12 +32,7 @@ namespace DarkSurvival.Scripts.Gameplay.Player
 
         public void Initialize()
         {
-            _rigidbody = _characterInScene.GetComponent<Rigidbody>();
-            Transform headTransform = _characterInScene.transform.Find("Head");
-            
-            _playerMovement = new PlayerMovement(_rigidbody, ReadPlayerData().moveSpeed, ReadPlayerData().jumpHeight, _inputManager);
-            _cameraController = new PlayerCameraController(_characterInScene.transform, headTransform, _inputManager, _cursorController);
-            _playerInteractObjects = new PlayerInteractObjects(_inventoryController, ReadPlayerData().MaxCollectDistance);
+            InitializePlayer();
             
             _runningMultiplier = ReadPlayerData().runSpeedMultiplier;
 
@@ -61,7 +56,17 @@ namespace DarkSurvival.Scripts.Gameplay.Player
             else
                 OnUpdateCalledFloat?.Invoke(1);
         }
-    
+
+        private void InitializePlayer()
+        {
+            _rigidbody = _characterInScene.GetComponent<Rigidbody>();
+            Transform headTransform = _characterInScene.transform.Find("Head");
+            
+            _playerMovement = new PlayerMovement(_rigidbody, ReadPlayerData().moveSpeed, ReadPlayerData().jumpHeight, _inputManager);
+            _cameraController = new PlayerCameraController(_characterInScene.transform, headTransform, _inputManager, _cursorController);
+            _playerInteractObjects = new PlayerInteractObjects(_inventoryController, ReadPlayerData().MaxCollectDistance);
+        }
+
         private PlayerData ReadPlayerData()
         {
             return JsonLoader.LoadJsonFile<PlayerData>("PlayerData");
