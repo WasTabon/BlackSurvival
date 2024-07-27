@@ -63,30 +63,28 @@ namespace DarkSurvival.Scripts.UI.Scripts
             MouseMoved?.Invoke(_mousePosition);
         }
         
-        public void ManageCanCollectAItemText(bool state, string itemName, int itemsCount)
+        public void ManageCanCollectItemText(bool state, string itemName, int itemsCount)
         {
-            SetActiveStateText(_canInteractText.gameObject, state);
-
-            if (state && !string.IsNullOrEmpty(itemName))
+            if (!string.IsNullOrEmpty(itemName))
             {
-                string newText = $"{_uiTextData.CollectText} {itemsCount} {itemName}";
-                if (_canInteractText.text != newText)
-                {
-                    _canInteractText.text = newText;
-                }
+                ManageText(state, $"{_uiTextData.CollectText} {itemsCount} {itemName}");
             }
         }
 
         public void ManageInteractText(bool state)
         {
+            ManageText(state, "E");
+        }
+
+        private void ManageText(bool state, string text)
+        {
             SetActiveStateText(_canInteractText.gameObject, state);
 
             if (state)
             {
-                string newText = $"E";
-                if (_canInteractText.text != newText)
+                if (_canInteractText.text != text)
                 {
-                    _canInteractText.text = newText;
+                    _canInteractText.text = text;
                 }
             }
         }

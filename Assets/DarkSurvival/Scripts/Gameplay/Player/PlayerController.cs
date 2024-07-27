@@ -36,7 +36,7 @@ namespace DarkSurvival.Scripts.Gameplay.Player
             
             _runningMultiplier = ReadPlayerData().runSpeedMultiplier;
 
-            _playerInteractObjects.OnSeeCollectable += _inputManager.UiController.ManageCanCollectAItemText;
+            _playerInteractObjects.OnSeeCollectable += _inputManager.UiController.ManageCanCollectItemText;
             _playerInteractObjects.OnSeeInteractable += _inputManager.UiController.ManageInteractText;
             
             OnUpdateCalledFloat += _playerMovement.HandleMovement;
