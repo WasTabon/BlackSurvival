@@ -1,16 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DarkSurvival.Data.Serializables.Player;
 using DarkSurvival.Data.Serializables.UI;
 using UnityEngine;
 using DarkSurvival.Scripts.Interfaces;
 using DarkSurvival.Scripts.Systems.DI;
 using DarkSurvival.Scripts.Systems.Management.Cursor;
 using DarkSurvival.Scripts.Systems.Utils.JsonLoader;
-using DarkSurvival.Scripts.Systems.Utils.MessageBus;
 using TMPro;
-using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 namespace DarkSurvival.Scripts.UI.Scripts
 {
@@ -37,6 +35,8 @@ namespace DarkSurvival.Scripts.UI.Scripts
         
         private UITextData _uiTextData;
         private TextMeshProUGUI _canInteractText;
+
+        private Stack<RectTransform> _activePanels;
         
         private Vector2 _mousePosition;
         private bool _canCollectItem;
@@ -48,6 +48,8 @@ namespace DarkSurvival.Scripts.UI.Scripts
         {
             _uiTextData = JsonLoader.LoadJsonFile<UITextData>("UITextData");
             _canInteractText = _uiView.GetCollectItemText;
+
+            _activePanels = new Stack<RectTransform>();
             
             SetupInputActions();
 
@@ -73,7 +75,14 @@ namespace DarkSurvival.Scripts.UI.Scripts
 
         public void ManageInteractText(bool state)
         {
-            ManageText(state, "E");
+            string interactKey = GetInputKeyName(_inputControls.Player.InteractWithObject).ToUpper();
+            ManageText(state, $"{interactKey}");
+        }
+        
+        private string GetInputKeyName(InputAction action)
+        {
+            var binding = action.bindings.FirstOrDefault();
+            return binding.path.Split('/').Last();
         }
 
         private void ManageText(bool state, string text)

@@ -89,6 +89,15 @@ public partial class @InputControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Escape"",
+                    ""type"": ""Button"",
+                    ""id"": ""158f4392-f171-47da-8321-628986bbb03f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -212,6 +221,17 @@ public partial class @InputControls : IInputActionCollection2, IDisposable
                     ""action"": ""InteractWithObject"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8c431914-b2dc-40c2-8834-b3ed5009f8e5"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Escape"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -227,6 +247,7 @@ public partial class @InputControls : IInputActionCollection2, IDisposable
         m_Player_MouseY = m_Player.FindAction("MouseY", throwIfNotFound: true);
         m_Player_OpenInventory = m_Player.FindAction("OpenInventory", throwIfNotFound: true);
         m_Player_InteractWithObject = m_Player.FindAction("InteractWithObject", throwIfNotFound: true);
+        m_Player_Escape = m_Player.FindAction("Escape", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -293,6 +314,7 @@ public partial class @InputControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_MouseY;
     private readonly InputAction m_Player_OpenInventory;
     private readonly InputAction m_Player_InteractWithObject;
+    private readonly InputAction m_Player_Escape;
     public struct PlayerActions
     {
         private @InputControls m_Wrapper;
@@ -304,6 +326,7 @@ public partial class @InputControls : IInputActionCollection2, IDisposable
         public InputAction @MouseY => m_Wrapper.m_Player_MouseY;
         public InputAction @OpenInventory => m_Wrapper.m_Player_OpenInventory;
         public InputAction @InteractWithObject => m_Wrapper.m_Player_InteractWithObject;
+        public InputAction @Escape => m_Wrapper.m_Player_Escape;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -334,6 +357,9 @@ public partial class @InputControls : IInputActionCollection2, IDisposable
                 @InteractWithObject.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteractWithObject;
                 @InteractWithObject.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteractWithObject;
                 @InteractWithObject.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteractWithObject;
+                @Escape.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEscape;
+                @Escape.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEscape;
+                @Escape.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEscape;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -359,6 +385,9 @@ public partial class @InputControls : IInputActionCollection2, IDisposable
                 @InteractWithObject.started += instance.OnInteractWithObject;
                 @InteractWithObject.performed += instance.OnInteractWithObject;
                 @InteractWithObject.canceled += instance.OnInteractWithObject;
+                @Escape.started += instance.OnEscape;
+                @Escape.performed += instance.OnEscape;
+                @Escape.canceled += instance.OnEscape;
             }
         }
     }
@@ -372,5 +401,6 @@ public partial class @InputControls : IInputActionCollection2, IDisposable
         void OnMouseY(InputAction.CallbackContext context);
         void OnOpenInventory(InputAction.CallbackContext context);
         void OnInteractWithObject(InputAction.CallbackContext context);
+        void OnEscape(InputAction.CallbackContext context);
     }
 }
