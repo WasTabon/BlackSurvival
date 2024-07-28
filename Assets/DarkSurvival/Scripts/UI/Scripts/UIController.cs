@@ -75,14 +75,14 @@ namespace DarkSurvival.Scripts.UI.Scripts
 
         public void ManageInteractText(bool state)
         {
-            string interactKey = GetInputKeyName(_inputControls.Player.InteractWithObject).ToUpper();
+            string interactKey = GetInputKeyName(_inputControls.Player.InteractWithObject);
             ManageText(state, $"{interactKey}");
         }
         
         private string GetInputKeyName(InputAction action)
         {
             var binding = action.bindings.FirstOrDefault();
-            return binding.path.Split('/').Last();
+            return binding.path.Split('/').Last().ToUpper();
         }
 
         private void ManageText(bool state, string text)
