@@ -22,7 +22,7 @@ namespace DarkSurvival.Scripts.Systems.InventorySystem
             _model.AddItem(itemData, count);
         }
 
-        public InventorySlot GetItem(int slotIndex)
+        public InventorySlot GetItemFromSlot(int slotIndex)
         {
             return _model.GetItem(slotIndex);
         }

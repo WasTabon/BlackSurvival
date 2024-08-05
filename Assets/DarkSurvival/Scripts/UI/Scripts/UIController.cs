@@ -25,6 +25,7 @@ namespace DarkSurvival.Scripts.UI.Scripts
         public event Action JumpPerformed;
         public event Action<bool> InventoryOpen;
         public event Action InteractWithObject;
+        public event Action EscapePressed; 
         
         [Inject] private InputControls _inputControls;
         [Inject] private UIView _uiView;
@@ -59,6 +60,7 @@ namespace DarkSurvival.Scripts.UI.Scripts
             InitializeUIInteractablePanels(_uiView, _cursorController, this);
             
             InventoryOpen += _uiInventoryPanel.ManageInventoryPanel;
+            EscapePressed += ClosePanelFromStack;
         }
         
         public void Update()
@@ -90,11 +92,18 @@ namespace DarkSurvival.Scripts.UI.Scripts
         {
             _activePanels.Pop();
         }
-        
-        private string GetInputKeyName(InputAction action)
+
+        private void ClosePanelFromStack()
         {
-            var binding = action.bindings.FirstOrDefault();
-            return binding.path.Split('/').Last().ToUpper();
+            if (!IsPanelsStackEmpty())
+            {
+                _activePanels.Peek().gameObject.SetActive(false);
+                _activePanels.Pop();
+                if (IsPanelsStackEmpty())
+                {
+                    LockCursor(true);
+                }
+            }
         }
 
         private void ManageText(bool state, string text)
@@ -127,8 +136,18 @@ namespace DarkSurvival.Scripts.UI.Scripts
             _inputControls.Player.OpenInventory.performed += _ => InventoryOpen?.Invoke(_isInventoryOpen);
             
             _inputControls.Player.InteractWithObject.performed += _ => InteractWithObject?.Invoke();
+            
+            _inputControls.Player.Escape.performed+= _ => EscapePressed?.Invoke();
         }
 
+        private void LockCursor(bool state)
+        {
+            if (state)
+                _cursorController.LockCursor();
+            else
+                _cursorController.UnlockCursor();
+        }
+        
         private void InitializeUICraftPanel(UIView uiView)
         {
             _uiCraftPanel = new UICraftPanel(uiView);
@@ -149,6 +168,17 @@ namespace DarkSurvival.Scripts.UI.Scripts
             {
                 textObject.SetActive(state);
             }
+        }
+        
+        private string GetInputKeyName(InputAction action)
+        {
+            var binding = action.bindings.FirstOrDefault();
+            return binding.path.Split('/').Last().ToUpper();
+        }
+
+        private bool IsPanelsStackEmpty()
+        {
+            return _activePanels.Count <= 0;
         }
     }
 }
