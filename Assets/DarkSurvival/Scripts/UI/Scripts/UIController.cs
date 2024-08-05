@@ -30,6 +30,7 @@ namespace DarkSurvival.Scripts.UI.Scripts
         [Inject] private UIView _uiView;
         [Inject] private CursorController _cursorController;
 
+        private UIInventoryPanel _uiInventoryPanel;
         private UICraftPanel _uiCraftPanel;
         private UIInteractablePanels _uiInteractablePanels;
         
@@ -52,11 +53,12 @@ namespace DarkSurvival.Scripts.UI.Scripts
             _activePanels = new Stack<RectTransform>();
             
             SetupInputActions();
-
-            InventoryOpen += ManageInventoryPanel;
             
+            InitializeUIInventoryPanel(_uiView, _cursorController, this);
             InitializeUICraftPanel(_uiView);
-            InitializeUIInteractablePanels(_uiView, _cursorController);
+            InitializeUIInteractablePanels(_uiView, _cursorController, this);
+            
+            InventoryOpen += _uiInventoryPanel.ManageInventoryPanel;
         }
         
         public void Update()
@@ -77,6 +79,16 @@ namespace DarkSurvival.Scripts.UI.Scripts
         {
             string interactKey = GetInputKeyName(_inputControls.Player.InteractWithObject);
             ManageText(state, $"{interactKey}");
+        }
+
+        public void AddPanelToStack(RectTransform panel)
+        {
+            _activePanels.Push(panel);
+        }
+
+        public void RemovePanelFromStack()
+        {
+            _activePanels.Pop();
         }
         
         private string GetInputKeyName(InputAction action)
@@ -116,38 +128,21 @@ namespace DarkSurvival.Scripts.UI.Scripts
             
             _inputControls.Player.InteractWithObject.performed += _ => InteractWithObject?.Invoke();
         }
-        
-        private void ManageCursor(bool state)
-        {
-            if (state)
-                _cursorController.LockCursor();
-            else
-                _cursorController.UnlockCursor();
-        }
 
         private void InitializeUICraftPanel(UIView uiView)
         {
             _uiCraftPanel = new UICraftPanel(uiView);
         }
-        private void InitializeUIInteractablePanels(UIView uiView, CursorController cursorController)
+        private void InitializeUIInteractablePanels(UIView uiView, CursorController cursorController, UIController uiController)
         {
-            _uiInteractablePanels = new UIInteractablePanels(uiView, cursorController);
-        }
-        
-        private void ManageInventoryPanel(bool state)
-        {
-            _isInventoryOpen = !_isInventoryOpen;
-            SetActiveStatePanel(_uiView.GetInventoryTransform.gameObject, _isInventoryOpen);
+            _uiInteractablePanels = new UIInteractablePanels(uiView, cursorController, uiController);
         }
 
-        private void SetActiveStatePanel(GameObject panel, bool state)
+        private void InitializeUIInventoryPanel(UIView uiView, CursorController cursorController, UIController uiController)
         {
-            if (panel.activeSelf != state)
-            {
-                ManageCursor(!state);
-                panel.SetActive(state);
-            }
+            _uiInventoryPanel = new UIInventoryPanel(uiView, cursorController, uiController);
         }
+        
         private void SetActiveStateText(GameObject textObject, bool state)
         {
             if (textObject.activeSelf != state)

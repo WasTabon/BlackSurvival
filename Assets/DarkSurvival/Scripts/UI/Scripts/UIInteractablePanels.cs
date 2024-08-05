@@ -7,13 +7,15 @@ namespace DarkSurvival.Scripts.UI.Scripts
 {
     public class UIInteractablePanels
     {
+        private readonly UIController _uiController;
         private readonly UIView _uiView;
         private readonly CursorController _cursorController;
         
-        private Dictionary<string, RectTransform> _ineractablePanels;
+        private readonly Dictionary<string, RectTransform> _ineractablePanels;
         
-        public UIInteractablePanels(UIView uiView, CursorController cursorController)
+        public UIInteractablePanels(UIView uiView, CursorController cursorController, UIController uiController)
         {
+            _uiController = uiController;
             _uiView = uiView;
             _cursorController = cursorController;
             
@@ -29,16 +31,25 @@ namespace DarkSurvival.Scripts.UI.Scripts
         {
             if (_ineractablePanels.TryGetValue(message.InteractableName, out RectTransform panel))
             {
-                SetActiveStatePanel(panel.gameObject, true);
+                SetActiveStatePanel(panel, true);
             }
         }
         
-        private void SetActiveStatePanel(GameObject panel, bool state)
+        private void SetActiveStatePanel(RectTransform panel, bool state)
         {
-            if (panel.activeSelf != state)
+            if (panel.gameObject.activeSelf != state)
             {
+                if (state)
+                {
+                    _uiController.AddPanelToStack(panel);
+                }
+                else
+                {
+                    _uiController.RemovePanelFromStack();
+                }
+                
                 ManageCursor(!state);
-                panel.SetActive(state);
+                panel.gameObject.SetActive(state);
             }
         }
         private void ManageCursor(bool state)
